@@ -20,7 +20,7 @@
   <main class="mars-current-weather">
     <h1 class="main-title">Latest weather at Elysium Plantitia</h1>
     <div class="date">
-      <h2 class="section-title section-title--date">Sol <span data-current-sol></span></h2>
+      <h2 class="section-title section-title--date">Sol&nbsp;<span data-current-sol></span></h2>
       <p class="date__day" data-current-date></p>
     </div>
     
@@ -41,15 +41,19 @@
     
     <div class="info">
       <p>InSight is taking daily weather measurements (temperature, wind, pressure) on the surface of Mars at Elysium Planitia, a flat, smooth plain near Mars’ equator.</p>
-      <p>This is only a part of InSight’s mission. Click here to find out more.</p>
+      <p>This is only a part of InSight’s mission. <a href="https://mars.nasa.gov/insight/mission/overview/">Click here</a> to find out more.</p>
     </div>
     
-    <div class="unit-toggle"></div>
+    <div class="unit">
+      <!-- aria-label and aria-checked need to change when clicked -->
+      <span>°C</span><button class="unit__toggle" role="swtich" aria-checked="false" aria-label="celcius">
+      </button><span>°F</span>
+    </div>
     
   </main>
   
   <div class="previous-weather" data-previous-weather-container>
-    <label class="show-previous-weather-label" for="weather-toggle">&#8593;</label>
+    <label class="show-previous-weather-label" for="weather-toggle"><span>&#8593;</span></label>
     <input type="checkbox" aria-label="show previous weather" id="weather-toggle" class="show-previous-weather-toggle" data-previous-weather-toggle>
     <h2 class="main-title previous-weather__title">Previous 7 days</h2>
     
