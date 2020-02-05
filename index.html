@@ -26,13 +26,24 @@
     
     <div class="temp">
       <h2 class="section-title">Temperature</h2>
-      <p class="reading temp__high">High: <span data-current-temp-high></span>°C</p>
-      <p class="reading temp__low">Low: <span data-current-temp-low></span>°C</p>
+      <p class="reading temp__high">
+        High:
+        <span data-current-temp-high></span>
+        °<span data-temp-unit>C</span>
+      </p>
+      <p class="reading temp__low">
+        Low:
+        <span data-current-temp-low></span>
+        °<span data-temp-unit>C</span>
+      </p>
     </div>
     
     <div class="wind">
       <h2 class="section-title">Wind</h2>
-      <p class="reading"><span data-wind-speed></span> kph</p>
+      <p class="reading">
+        <span data-wind-speed></span>
+        <span data-speed-unit>kph</span>
+      </p>
       <div class="wind__direction">
         <p class="wind__dir sr-only"><span data-wind-direction-text></span>deg</p>
         <div class="wind__arrow" data-wind-direction-arrow></div>
@@ -45,9 +56,15 @@
     </div>
     
     <div class="unit">
-      <!-- aria-label and aria-checked need to change when clicked -->
-      <span>°C</span><button class="unit__toggle" role="swtich" aria-checked="false" aria-label="celcius">
-      </button><span>°F</span>
+      <span>°C</span>
+      <button
+        data-unit-toggle
+        class="unit__toggle"
+        role="switch"
+        aria-checked="false"
+        aria-label="celsius"
+      ></button>
+      <span>°F</span>
     </div>
     
   </main>
@@ -64,8 +81,16 @@
     <div class="previous-day">
       <h3 class="previous-day__sol">Sol <span data-sol></span></h3>
       <p class="previous-day__date" data-date></p>
-      <p class="previous-day__temp previous-day__temp--high">High: <span data-temp-high></span>°C</p>
-      <p class="previous-day__temp previous-day__temp--low">Low: <span data-temp-low></span>°C</p>
+      <p class="previous-day__temp previous-day__temp--high">
+        High:
+        <span data-temp-high></span>
+        °<span data-temp-unit>C</span>
+      </p>
+      <p class="previous-day__temp previous-day__temp--low">
+        Low:
+        <span data-temp-low></span>
+        °<span data-temp-unit>C</span>
+      </p>
       <button class="more-info" data-select-button>more info</button>
     </div>
   </template>

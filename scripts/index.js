@@ -15,13 +15,28 @@ const previousSolContainer = document.querySelector('[data-previous-sols]')
 const previousWeatherToggle = document.querySelector('[data-previous-weather-toggle]')
 const previousWeatherContainer = document.querySelector('[data-previous-weather-container]')
 
+const unitToggle = document.querySelector('[data-unit-toggle]')
+
+let selectedSolIndex
+let metricUnits = unitToggle.getAttribute('aria-checked') !== 'true'
+
 previousWeatherToggle.addEventListener('change', () => {
   previousWeatherContainer.classList.toggle('show-weather')
 })
 
 getWeather().then(sols => {
-  displaySelectedSol(sols)
+  selectedSolIndex = sols.length - 1
   displayPreviousSols(sols)
+  displaySelectedSol(sols)
+
+  unitToggle.addEventListener('click', () => {
+    metricUnits = !metricUnits
+    const label = metricUnits ? "celsius" : "fahrenheit"
+    unitToggle.setAttribute('aria-checked', !metricUnits)
+    unitToggle.setAttribute('aria-label', label)
+    displaySols(sols)
+    updateUnits()
+  })
 })
 
 function getWeather() {
@@ -47,13 +62,18 @@ function getWeather() {
     })
 }
 
-function displaySelectedSol(sols, selectedIndex = sols.length - 1) {
-  const selectedSol = sols[selectedIndex]
+function displaySols(sols) {
+  displaySelectedSol(sols)
+  displayPreviousSols(sols)
+}
+
+function displaySelectedSol(sols) {
+  const selectedSol = sols[selectedSolIndex]
   currentSolElement.innerText = selectedSol.sol
   currentDateElement.innerText = displayDate(selectedSol.date)
-  currentTempHighElement.innerText = Math.round(selectedSol.maxTemp)
-  currentTempLowElement.innerText = Math.round(selectedSol.minTemp)
-  windSpeedElement.innerText = Math.round(selectedSol.windSpeed)
+  currentTempHighElement.innerText = displayTemperature(selectedSol.maxTemp)
+  currentTempLowElement.innerText = displayTemperature(selectedSol.minTemp)
+  windSpeedElement.innerText = displaySpeed(selectedSol.windSpeed)
   windDirectionText.innerText = selectedSol.windDirectionCardinal
   windDirectionArrow.style.setProperty('--direction', `${selectedSol.windDirectionDegrees}deg`)
 }
@@ -64,10 +84,11 @@ function displayPreviousSols(sols) {
     const solContainer = previousSolTemplate.content.cloneNode(true)
     solContainer.querySelector('[data-sol]').innerText = solData.sol
     solContainer.querySelector('[data-date]').innerText = displayDate(solData.date)
-    solContainer.querySelector('[data-temp-high]').innerText = Math.round(solData.maxTemp)
-    solContainer.querySelector('[data-temp-low]').innerText = Math.round(solData.minTemp)
+    solContainer.querySelector('[data-temp-high]').innerText = displayTemperature(solData.maxTemp)
+    solContainer.querySelector('[data-temp-low]').innerText = displayTemperature(solData.minTemp)
     solContainer.querySelector('[data-select-button]').addEventListener('click', () => {
-      displaySelectedSol(sols, index)
+      selectedSolIndex = index
+      displaySelectedSol(sols)
     })
     previousSolContainer.appendChild(solContainer)
   })
@@ -78,4 +99,29 @@ function displayDate(date) {
     undefined,
     { day: 'numeric', month: 'long' }
   )
+}
+
+function displayTemperature(temperature) {
+  let returnTemp = temperature
+  if (!metricUnits) {
+    returnTemp = (temperature - 32) * (5 / 9)
+  }
+
+  return Math.round(returnTemp)
+}
+
+function displaySpeed(speed) {
+  let returnSpeed = speed
+  if (!metricUnits) {
+    returnSpeed = speed / 1.609
+  }
+
+  return Math.round(returnSpeed)
+}
+
+function updateUnits() {
+  const speedUnits = document.querySelectorAll('[data-speed-unit]')
+  const tempUnits = document.querySelectorAll('[data-temp-unit]')
+  speedUnits.forEach(unit => unit.innerText = metricUnits ? 'kph' : 'mph')
+  tempUnits.forEach(unit => unit.innerText = metricUnits ? 'C' : 'F')
 }

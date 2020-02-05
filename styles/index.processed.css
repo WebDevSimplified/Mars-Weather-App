@@ -170,6 +170,7 @@ a:hover {
   background: var(--clr-gray);
   border-radius: 100vmax;
   margin: 3px;
+  height: 15px;
   width: calc(50% - 8px);
   transition: background-color 250ms;
 }
